@@ -2,8 +2,10 @@ let x, y;
 let grid;
 let moves = 0;
 let moveCard = document.getElementById("moves");
-let level = 30;
+let addBlockCard = document.getElementById("addblockcard")
+window.level = 30;
 let scl, cols, rows;
+let dict = { "10": 3, "20": 5, "40": 10 }
 
 // A function to make a 2D Array
 function make2dArray(cols, rows) {
@@ -19,32 +21,22 @@ function setup() {
     var canvas = createCanvas(500, 500);
     canvas.style.border = "2px solid black";
     canvas.parent("canvas");
-    
+
     let savedLevel = localStorage.getItem('level');
     if (savedLevel) {
-        level = parseInt(savedLevel);
+        window.level = parseInt(savedLevel);
+        window.addBlock = dict[savedLevel]
     }
-
+    addBlockCard.innerHTML = "Blocks to add Left: " + window.addBlock
     // adding Block Count 
-    if (level == 4)
-    {
-        window.addBlock = 1
-    }
-    else if (level = 10)
-    {
-        window.addBlock = 3
-    }
-    else 
-    {
-        window.addBlock = 5
-    }
 
-    grid = make2dArray(level, level);
-    scl = 500 / level;
+    console.log(window.level)
+    grid = make2dArray(window.level, window.level);
+    scl = 500 / window.level;
 
     rows = width / scl;
     cols = height / scl;
-    
+
     // setting the grid by filling it with 1s and 0s randomly
     for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
@@ -55,9 +47,9 @@ function setup() {
 }
 
 function draw() {
-    
+
     background(0);
-    
+
     for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
             let x = i * scl;
@@ -74,8 +66,19 @@ function draw() {
     }
     // for future use
     if (mouseIsPressed) {
-        
+
     }
+
+}
+function checkIfWon() {
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+            if (grid[i][j] == 1) {
+                return false
+            }
+        }
+    }
+    return true
 }
 
 // Basic Flood Fill algorithm (for deleting blocks)
@@ -101,32 +104,36 @@ function mouseClicked() {
     x = floor(mouseX / scl);
     y = floor(mouseY / scl);
     // adding the block
-    if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height && grid[x][y] == 0) {
+    if (!checkIfWon()) {
+        if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height && grid[x][y] == 0) {
 
-            if (window.addBlock > 0)
-            {
+            if (window.addBlock > 0) {
                 grid[x][y] = 1
-                window.addBlock -=  1
+                window.addBlock -= 1
+                addBlockCard.innerHTML = "Blocks to add Left: " + window.addBlock
             }
-            else
-            {
+            else {
                 alert("No more adding blocks")
             }
-             
-    }
-    // deleting the block
-    else if(mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
-        
-         floodFill(x, y, 0);
+
+        }
+           // deleting the block
+        else if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
+
+            floodFill(x, y, 0);
             moves++;
             moveCard.innerHTML = "MOVES: " + moves;
-        
+    
+        }
+    }
+    else
+    {
+        alert("You Had Minimum Moves of: "+moves)
     }
 }
-
 function setLevel(value) {
     localStorage.setItem('level', value);
-    level = parseInt(localStorage.getItem('level'));
-    console.log(level);
-    setup(); 
+    window.level = parseInt(localStorage.getItem('level'));
+    console.log(window.level);
+    setup();
 }
