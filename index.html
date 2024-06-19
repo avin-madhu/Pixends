@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>Pixends</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js" type="module"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
 </head>
 
 <body>
@@ -37,12 +36,11 @@
   <div style="display: flex;flex-direction: column;" id="container">
 
     <div style="padding-top: 40px" align="center" id="canvas"></div>
+
     <div style="display: table-row;">
       <div style="padding-top: 30px" id="moves" align="center"">MOVES: 0</div>
     </div> <div id="addblockcard" align="center"> Blocks to add Left: </div>
     </div>
-  <div style=" padding-top: 30px" align="center" id="levelButtons">
-
 
    <!-- Login Modal -->
    <div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
@@ -53,12 +51,8 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-
           <form id="login-form" class="text-center" class="form-signin">
             <!-- <img class="mb-4" src="assets/img/apple-touch-icon.png" alt="" width="170" height="170"> -->
-
-
-
             <h1 class="h3 mb-3 font-weight-normal">Login</h1>
             <br>
             <input type="email" id="login-email" class="form-control" placeholder="Email address" required autofocus>
@@ -87,7 +81,7 @@
         </div>
         <div class="modal-body">
           <form id="signup-form" class="text-center" class="form-signin">
-            <img class="mb-4" src="assets/img/favicon.png" alt="" width="72" height="72">
+            <!-- <img class="mb-4" src="assets/img/favicon.png" alt="" width="72" height="72"> -->
             <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
             <br>
             <input type="text" id="signup-name" class="form-control" placeholder="Full Name" required autofocus>
@@ -112,11 +106,12 @@
       </div>
     </div>
   </div>
+     <div style=" padding-top: 30px" align="center" id="levelButtons">
         <button onclick="setLevel(10)">Easy</button>
         <button onclick="setLevel(20)">Medium</button>
         <button onclick="setLevel(40)">Hard</button>
       </div>
-      <script src=" script.js"></script>
+      <script src=" script.js" type="module"></script>
       <script src="auth.js" type="module"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
       <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js" type="module"></script>
