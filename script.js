@@ -1,7 +1,3 @@
-import {db,auth, setupUI} from '/firebase.js'
-import { onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import { getFirestore, getDocs, addDoc, collection } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-import "https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"
 let x, y;
 let grid;
 let moves = 0;
