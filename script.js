@@ -113,7 +113,10 @@ function mouseClicked() {
                 addBlockCard.innerHTML = "Blocks to add Left: " + window.addBlock
             }
             else {
-                alert("No more adding blocks")
+                if(!window.modalShown)
+                    {
+                        alert("No more adding blocks")
+                    }
             }
 
         }
@@ -128,12 +131,40 @@ function mouseClicked() {
     }
     else
     {
+        if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height && grid[x][y] == 0) {
         alert("You Had Minimum Moves of: "+moves)
+        }
     }
 }
+
+window.modalShown = false
+document.addEventListener('DOMContentLoaded', function () {
+    const modals = document.getElementById('signup-modal');
+  
+    modals.addEventListener('shown.bs.modal', function () {
+      window.modalShown = true
+    });
+  
+    modals.addEventListener('hidden.bs.modal', function () {
+        window.modalShown = false
+    });
+  });
+  
+  document.addEventListener('DOMContentLoaded', function () {
+    const modall = document.getElementById('login-modal');
+  
+    modall.addEventListener('shown.bs.modal', function () {
+      window.modalShown = true
+    });
+  
+    modall.addEventListener('hidden.bs.modal', function () {
+        window.modalShown = false
+    });
+  });
 function setLevel(value) {
     localStorage.setItem('level', value);
     window.level = parseInt(localStorage.getItem('level'));
     console.log(window.level);
+    window.location.reload()
     setup();
 }
