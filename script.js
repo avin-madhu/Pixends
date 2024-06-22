@@ -1,3 +1,8 @@
+// import "https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"
+// import "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
+// import "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
+// import "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+
 let x, y;
 let grid;
 let moves = 0;
@@ -6,6 +11,7 @@ let addBlockCard = document.getElementById("addblockcard")
 window.level = 30;
 let scl, cols, rows;
 let dict = { "10": 3, "20": 5, "40": 10 }
+let levelName =  { "10": "Easy", "20": "Medium", "40": "Hard" }
 
 // A function to make a 2D Array
 function make2dArray(cols, rows) {
@@ -30,7 +36,6 @@ function setup() {
     addBlockCard.innerHTML = "Blocks to add Left: " + window.addBlock
     // adding Block Count 
 
-    console.log(window.level)
     grid = make2dArray(window.level, window.level);
     scl = 500 / window.level;
 
@@ -64,22 +69,42 @@ function draw() {
             rect(x, y, scl, scl);
         }
     }
-    // for future use
-    if (mouseIsPressed) {
-
-    }
-
+    
 }
+
+
+
+
+window.scoreSubmitted = false;
+
+// function to check if the user won or not
 function checkIfWon() {
     for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
             if (grid[i][j] == 1) {
-                return false
+                return false;
             }
         }
     }
-    return true
+    // Submit the score to Firestore if the user has won
+    onAuthStateChanged(auth, user => {
+        if (user && !window.scoreSubmitted) {
+            window.scoreSubmitted = true; // Prevent multiple submissions
+            addDoc(collection(db, "scores"), {
+                uid: user.uid,
+                username: window.username, // Ensure username is fetched correctly
+                score: moves,
+                level: levelName[window.level]
+            }).then(docRef => {
+                console.log("Document written with ID: ", docRef.id);
+            }).catch(error => {
+                console.error("Error adding document: ", error);
+            });
+        }
+    });
+    return true;
 }
+
 
 // Basic Flood Fill algorithm (for deleting blocks)
 function floodFill(x, y, newColor) {
@@ -120,7 +145,7 @@ function mouseClicked() {
             }
 
         }
-           // deleting the block
+        //    deleting the block
         else if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
 
             floodFill(x, y, 0);
@@ -137,6 +162,7 @@ function mouseClicked() {
     }
 }
 
+
 window.modalShown = false
 document.addEventListener('DOMContentLoaded', function () {
     const modals = document.getElementById('signup-modal');
@@ -150,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
   
+
   document.addEventListener('DOMContentLoaded', function () {
     const modall = document.getElementById('login-modal');
   
@@ -161,6 +188,8 @@ document.addEventListener('DOMContentLoaded', function () {
         window.modalShown = false
     });
   });
+
+
 function setLevel(value) {
     localStorage.setItem('level', value);
     window.level = parseInt(localStorage.getItem('level'));
@@ -168,3 +197,5 @@ function setLevel(value) {
     window.location.reload()
     setup();
 }
+
+// export {checkIfWon}
